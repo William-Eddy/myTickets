@@ -5,7 +5,7 @@
 {% block content %}
 {{ super() }}
 
-<form>
+<form action="/checkout/guestDetails" method="post">
   <label for="firstName">First name:</label><br>
   <input type="text" id="firstName" name="firstName"><br>
   <label for="lastName">Last name:</label><br>

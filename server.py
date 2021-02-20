@@ -20,6 +20,15 @@ def executeQuery(query, values=()):
     connection.close()
     return data
 
+def executeStatement(query, values=()):
+    connection = getDatabaseConnection()
+    cursor = connection.cursor(prepared=True)
+    cursor.execute(query,values)
+    connection.commit()
+    connection.close()
+
+    return None
+
 def getBasketData():
 
     basket = getCookieBasket()
@@ -59,15 +68,26 @@ def loadBasket():
     if request.method == 'GET':
         return render_template("basket.html", basketData=getBasketData())
 
-@app.route('/checkout/guestDetails', methods = ['GET'])
+@app.route('/checkout/guestDetails', methods = ['GET','POST'])
 def guestDetails():
     if request.method == 'GET':
         return render_template("guestDetails.html")
+    if request.method == 'POST':
+        firstName = request.form['firstName']
+        lastName = request.form['lastName']
+        emailAddress = request.form['emailAddress']
+        addressLine1 = request.form['addressLine1']
+        addressLine2 = request.form['addressLine2']
+        postcode = request.form['postcode']
+        mobileNumber = request.form['mobileNumber']
+
+        executeStatement("INSERT INTO guests (guestFirstName, guestLastName, guestEmailAddress, guestAddressLine1, guestAddressLine2, guestPostcode, guestMobileNumber) VALUES (%s,%s,%s,%s,%s,%s,%s)",(firstName,lastName,emailAddress,addressLine1,addressLine2,postcode,mobileNumber,))
+        guestID = (executeQuery("SELECT guestID FROM guests WHERE guestEmailAddress = %s",(emailAddress,)))[0][0]
+        return str(guestID)
 
 @app.route('/basket/add', methods = ['POST'])
 def addToBasket():
    if request.method == 'POST':
-       print("----- RUNNING -----")
        performanceID = request.form['performanceID']
        quantity = request.form['quantity']
        exisitngItems = ""
@@ -77,6 +97,9 @@ def addToBasket():
        resp = make_response(render_template('basket.html'))
        resp.set_cookie('basket', exisitngItems + performanceID+"."+quantity+"/")
        return resp
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=80, host='0.0.0.0')
