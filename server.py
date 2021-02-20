@@ -20,6 +20,27 @@ def executeQuery(query, values=()):
     connection.close()
     return data
 
+def getBasketData():
+
+    basket = getCookieBasket()
+
+    for product in basket:
+        eventID = product[0]
+        product[0] = (executeQuery("SELECT p.performanceID, e.eventName, e.eventPerformer, v.venueName, v.venueCity, DATE_FORMAT(p.performanceDateTime, '%D %M %Y')AS date FROM performances p INNER JOIN events e ON e.eventID = p.eventID INNER JOIN venues v ON v.venueID = p.venueID WHERE e.eventID = %s",(eventID,)))[0]
+
+    return basket
+
+def getCookieBasket():
+    basket = request.cookies.get("basket").split("/")
+    basket.pop()
+    result = []
+
+    for product in basket:
+        productSplit = product.split(".")
+        result.append(productSplit)
+
+    return result
+
 @app.route("/upcomingEvents")
 def upcomingEvents():
     if request.method =='GET':
@@ -36,7 +57,9 @@ def viewDates(eventID):
 @app.route('/basket', methods = ['GET'])
 def loadBasket():
     if request.method == 'GET':
-        return render_template("basket.html", basket=request.cookies.get('basket'))
+        return render_template("basket.html", basketData=getBasketData())
+
+
 
 @app.route('/basket/add', methods = ['POST'])
 def addToBasket():

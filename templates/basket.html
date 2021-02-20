@@ -5,7 +5,28 @@
 {% block content %}
 {{ super() }}
 
-{{basket}}
+<table>
+  <tr>
+    <th>performanceID</th>
+    <th>eventName</th>
+    <th>eventPerformer</th>
+    <th>venueName</th>
+    <th>venueCity</th>
+    <th>performanceDateTime</th>
+    <th>quantity</th>
+  </tr>
+  {% for product in basketData %}
+  <tr>
+    <td>{{product[0][0]}}</td>
+    <td>{{product[0][1]}}</td>
+    <td>{{product[0][2]}}</td>
+    <td>{{product[0][3]}}</td>
+    <td>{{product[0][4]}}</td>
+    <td>{{product[0][5]}}</td>
+    <td>{{product[1]}}</td>
+  </tr>
+  {% endfor %}
+</table>
 
 <form action="/checkout">
   <input type="submit" value="Checkout" />
