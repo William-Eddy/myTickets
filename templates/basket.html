@@ -5,9 +5,11 @@
 {% block content %}
 {{ super() }}
 
-Basket
-
 {{basket}}
+
+<form action="/checkout">
+  <input type="submit" value="Checkout" />
+</form>
 
 
 {% endblock %}

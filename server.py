@@ -44,9 +44,12 @@ def addToBasket():
        print("----- RUNNING -----")
        performanceID = request.form['performanceID']
        quantity = request.form['quantity']
+       exisitngItems = ""
+       if 'basket' in request.cookies:
+           exisitngItems = request.cookies.get('basket')
 
        resp = make_response(render_template('basket.html'))
-       resp.set_cookie('basket', performanceID+"."+quantity+"/")
+       resp.set_cookie('basket', exisitngItems + performanceID+"."+quantity+"/")
        return resp
 
 
