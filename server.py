@@ -59,7 +59,10 @@ def loadBasket():
     if request.method == 'GET':
         return render_template("basket.html", basketData=getBasketData())
 
-
+@app.route('/checkout/guestDetails', methods = ['GET'])
+def guestDetails():
+    if request.method == 'GET':
+        return render_template("guestDetails.html")
 
 @app.route('/basket/add', methods = ['POST'])
 def addToBasket():
@@ -74,7 +77,6 @@ def addToBasket():
        resp = make_response(render_template('basket.html'))
        resp.set_cookie('basket', exisitngItems + performanceID+"."+quantity+"/")
        return resp
-
 
 if __name__ == "__main__":
     app.run(debug=True, port=80, host='0.0.0.0')

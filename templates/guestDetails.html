@@ -1,0 +1,26 @@
+{% extends "standardPage.html" %}
+
+{% set title = "Guest Details" %}
+
+{% block content %}
+{{ super() }}
+
+<form>
+  <label for="firstName">First name:</label><br>
+  <input type="text" id="firstName" name="firstName"><br>
+  <label for="lastName">Last name:</label><br>
+  <input type="text" id="lastName" name="lastName"><br>
+  <label for="emailAddress">Last name:</label><br>
+  <input type="text" id="emailAddress" name="emailAddress"><br>
+  <label for="addressLine1">Address Line 1:</label><br>
+  <input type="text" id="addressLine1" name="addressLine1"><br>
+  <label for="addressLine2">Address Line 2:</label><br>
+  <input type="text" id="addressLine2" name="addressLine2"><br>
+  <label for="postcode">Postcode:</label><br>
+  <input type="text" id="postcode" name="postcode"><br>
+  <label for="mobileNumber">Mobile Number:</label><br>
+  <input type="text" id="mobileNumber" name="mobileNumber"><br>
+  <input type="submit" value="Go to payment" /><br>
+</form>
+
+{% endblock %}
