@@ -34,5 +34,17 @@ def viewDates(eventID):
         return render_template("viewDates.html", performances=performanceData)
 
 
+@app.route('/basket/add', methods = ['POST'])
+def addToBasket():
+   if request.method == 'POST':
+   performanceID = request.form['perfomanceID']
+   quantity = request.form['quantity']
+
+   resp = make_response(render_template('basket.html'))
+   resp.set_cookie('basket', 'test')
+
+   return resp
+
+
 if __name__ == "__main__":
     app.run(debug=True, port=80, host='0.0.0.0')
