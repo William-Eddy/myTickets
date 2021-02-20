@@ -90,6 +90,11 @@ def guestDetails():
         guestID = (executeQuery("SELECT guestID FROM guests WHERE guestEmailAddress = %s",(emailAddress,)))[0][0]
         return str(guestID)
 
+@app.route('/checkout/orderConfirmed', methods = ['GET'])
+def loadOrderConfirmed():
+    if request.method == 'GET':
+        return render_template("orderConfirmed.html", basketData=getBasketData())
+
 @app.route('/basket/add', methods = ['POST'])
 def addToBasket():
    if request.method == 'POST':
