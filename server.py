@@ -20,5 +20,12 @@ def executeQuery(query, values=[]):
     connection.close()
     return data
 
+@app.route("/upcomingEvents")
+def upcomingEvents():
+    if request.method =='GET':
+        eventData = executeQuery("SELECT eventID, eventName, eventPerformer FROM events")
+        return render_template("upcomingEvents.html", events=eventData)
+
+
 if __name__ == "__main__":
     app.run(debug=True, port=80, host='0.0.0.0')

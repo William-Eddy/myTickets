@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Upcoming events</title>
+  </head>
+  <body>
+
+    <table>
+      <tr>
+        <th>eventID</th>
+        <th>Event</th>
+        <th>Performer</th>
+      </tr>
+      {% for event in events %}
+      <tr>
+        <td>{{event[0]}}</td>
+        <td>{{event[1]}}</td>
+        <td>{{event[2]}}</td>
+      </tr>
+      {% endfor %}
+    </table>
+
+  </body>
+</html>
