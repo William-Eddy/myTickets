@@ -1,6 +1,12 @@
 from flask import Flask
+from flask_mysqldb import MySQL
 
-DATABASE = "myTickets.db"
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'Kettering1'
+app.config['MYSQL_DB'] = 'myTickets'
+
+mysql = MySQL(app)
 
 app = Flask(__name__)
 
