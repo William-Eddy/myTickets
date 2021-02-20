@@ -33,6 +33,10 @@ def viewDates(eventID):
         performanceData = executeQuery("SELECT p.performanceID, v.venueCity, v.venueName, DATE_FORMAT(p.performanceDateTime, '%D %M %Y')AS date FROM performances p INNER JOIN venues v ON p.venueID = v.venueID WHERE p.eventID = %s",(eventID,))
         return render_template("viewDates.html", performances=performanceData)
 
+@app.route('/basket', methods = ['GET'])
+def loadBasket():
+    if request.method == 'GET':
+        return render_template("basket.html", basket=request.cookies.get('basket'))
 
 @app.route('/basket/add', methods = ['POST'])
 def addToBasket():
