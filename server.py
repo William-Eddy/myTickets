@@ -26,6 +26,12 @@ def upcomingEvents():
         eventData = executeQuery("SELECT eventID, eventName, eventPerformer FROM events")
         return render_template("upcomingEvents.html", events=eventData)
 
+@app.route("/upcomingEvents/viewDates/<eventID>")
+def viewDates(eventID):
+    if request.method =='GET':
+        performanceData = executeQuery("SELECT p.performanceID, v.venueCity, v.venueName, DATE_FORMAT(p.performanceDateTime, "%D %M %Y")AS date FROM performances p INNER JOIN venues v ON p.venueID = v.venueID WHERE p.eventID = ?",[eventID])
+        return render_template("viewDates.html", date=performanceData)
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=80, host='0.0.0.0')
