@@ -126,7 +126,7 @@ def logout():
    session.pop('loggedin', None)
    session.pop('id', None)
    # Redirect to login page
-   return redirect(url_for('account/login'))
+   return render_template("login.html", msg = "")
 
 
 @app.route('/account/register', methods = ['GET','POST'])
@@ -146,6 +146,14 @@ def register():
         executeStatement("INSERT INTO guests (guestFirstName, guestLastName, guestEmailAddress, guestAddressLine1, guestAddressLine2, guestPostcode, guestMobileNumber, guestPassword) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",(firstName,lastName,emailAddress,addressLine1,addressLine2,postcode,mobileNumber,password,))
         guestID = (executeQuery("SELECT guestID FROM guests WHERE guestEmailAddress = %s",(emailAddress,)))[0][0]
         return str(guestID)
+
+@app.route('/account/profile', methods = ['GET'])
+def profile():
+    if 'loggedin' in session:
+        account = executeQueryOne("SELECT * FROM guests WHERE guestID = %s",(session['id'],))
+        return render_template("profile.html", accountData=account)
+    else:
+        return render_template("login.html", msg = "")
 
 if __name__ == "__main__":
     app.run(debug=True, port=80, host='0.0.0.0')

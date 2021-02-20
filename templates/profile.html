@@ -1,0 +1,14 @@
+{% extends "standardPage.html" %}
+
+{% set title = "Profile" %}
+
+{% block content %}
+{{ super() }}
+
+Profile
+
+First name: {{accountData[1]}}
+Last name: {{accountData[2]}}
+Email Address: {{accountData[3]}}
+
+{% endblock %}
