@@ -83,23 +83,6 @@ def loadPayment():
     if request.method == 'GET':
         return render_template("payment.html", basketData=getBasketData())
 
-@app.route('/checkout/guestDetails', methods = ['GET','POST'])
-def guestDetails():
-    if request.method == 'GET':
-        return render_template("guestDetails.html")
-    if request.method == 'POST':
-        firstName = request.form['firstName']
-        lastName = request.form['lastName']
-        emailAddress = request.form['emailAddress']
-        addressLine1 = request.form['addressLine1']
-        addressLine2 = request.form['addressLine2']
-        postcode = request.form['postcode']
-        mobileNumber = request.form['mobileNumber']
-
-        executeStatement("INSERT INTO guests (guestFirstName, guestLastName, guestEmailAddress, guestAddressLine1, guestAddressLine2, guestPostcode, guestMobileNumber) VALUES (%s,%s,%s,%s,%s,%s,%s)",(firstName,lastName,emailAddress,addressLine1,addressLine2,postcode,mobileNumber,))
-        guestID = (executeQuery("SELECT guestID FROM guests WHERE guestEmailAddress = %s",(emailAddress,)))[0][0]
-        return str(guestID)
-
 @app.route('/checkout/orderConfirmed', methods = ['GET'])
 def loadOrderConfirmed():
     if request.method == 'GET':
@@ -118,7 +101,7 @@ def addToBasket():
        resp.set_cookie('basket', exisitngItems + performanceID+"."+quantity+"/")
        return resp
 
-@app.route('account/login', methods = ['GET','POST'])
+@app.route('/account/login', methods = ['GET','POST'])
 def loadLogin():
     if request.method == 'GET':
         errorMessage = ""
@@ -137,13 +120,32 @@ def loadLogin():
             errorMessage = "Login failed."
     return render_template("login.html", msg = errorMessage)
 
-@app.route('account/logout', methods = ['GET'])
+@app.route('/account/logout', methods = ['GET'])
 def logout():
     # Remove session data, this will log the user out
    session.pop('loggedin', None)
    session.pop('id', None)
    # Redirect to login page
    return redirect(url_for('account/login'))
+
+
+@app.route('/account/register', methods = ['GET','POST'])
+def register():
+    if request.method == 'GET':
+        return render_template("register.html")
+    if request.method == 'POST':
+        firstName = request.form['firstName']
+        lastName = request.form['lastName']
+        emailAddress = request.form['emailAddress']
+        addressLine1 = request.form['addressLine1']
+        addressLine2 = request.form['addressLine2']
+        postcode = request.form['postcode']
+        mobileNumber = request.form['mobileNumber']
+        password = request.form['password']
+
+        executeStatement("INSERT INTO guests (guestFirstName, guestLastName, guestEmailAddress, guestAddressLine1, guestAddressLine2, guestPostcode, guestMobileNumber, guestPassword) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",(firstName,lastName,emailAddress,addressLine1,addressLine2,postcode,mobileNumber,password,))
+        guestID = (executeQuery("SELECT guestID FROM guests WHERE guestEmailAddress = %s",(emailAddress,)))[0][0]
+        return str(guestID)
 
 if __name__ == "__main__":
     app.run(debug=True, port=80, host='0.0.0.0')
