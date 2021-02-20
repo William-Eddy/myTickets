@@ -17,7 +17,11 @@
         <td>{{event[0]}}</td>
         <td>{{event[1]}}</td>
         <td>{{event[2]}}</td>
-        <td><button type="button">View dates</button></td>
+        <td>
+        <form action="upcomingEvents/viewDates/{{event[0]}}">
+          <input type="submit" value="View dates" />
+        </form>
+        </td>
       </tr>
       {% endfor %}
     </table>
