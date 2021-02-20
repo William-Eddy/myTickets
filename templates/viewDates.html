@@ -16,9 +16,39 @@
       <td>{{performance[0]}}</td>
       <td>{{performance[1]}}</td>
       <td>{{performance[2]}}</td>
-      <td><button type="button">Tickets</button></td>
+      <td>
+        <form onSubmit="return addToBasket({{performance[0]}},'test')">
+          <input type="submit" value="Tickets" />
+        </form>
+      </td>
     </tr>
     {% endfor %}
   </table>
+
+{% endblock %}
+
+{% block script %}
+{{ super() }}
+
+<script>
+
+  function addToBasket(performanceID, quantity) {
+    params = 'performanceID='+performanceID+'&quantity='+quantity;
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", '/basket/add', true); // true is asynchronous
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.onload = function() {
+      if (xhttp.readyState === 4 && xhttp.status === 200) {
+        console.log(xhttp.responseText);
+      } else {
+        console.error(xhttp.statusText);
+      }
+    };
+    xhttp.send(params);
+    return false;
+  }
+
+</script>
+
 
 {% endblock %}

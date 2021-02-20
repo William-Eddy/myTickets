@@ -1,4 +1,4 @@
-from flask import Flask, redirect, request,render_template, jsonify, send_from_directory
+from flask import Flask, redirect, request,render_template, jsonify, send_from_directory, make_response
 import mysql.connector
 
 app = Flask(__name__)
@@ -37,13 +37,13 @@ def viewDates(eventID):
 @app.route('/basket/add', methods = ['POST'])
 def addToBasket():
    if request.method == 'POST':
-   performanceID = request.form['perfomanceID']
-   quantity = request.form['quantity']
+       print("----- RUNNING -----")
+       performanceID = request.form['performanceID']
+       quantity = request.form['quantity']
 
-   resp = make_response(render_template('basket.html'))
-   resp.set_cookie('basket', 'test')
-
-   return resp
+       resp = make_response(render_template('basket.html'))
+       resp.set_cookie('basket', performanceID+"."+quantity+"/")
+       return resp
 
 
 if __name__ == "__main__":
