@@ -1,5 +1,6 @@
-from flask import Flask, redirect, request,render_template, jsonify, send_from_directory, make_response
+from flask import Flask, redirect, request,render_template, jsonify, send_from_directory, make_response, url_for, session
 import mysql.connector
+
 
 app = Flask(__name__)
 
@@ -108,6 +109,10 @@ def addToBasket():
        resp.set_cookie('basket', exisitngItems + performanceID+"."+quantity+"/")
        return resp
 
+@app.route('/login', methods = ['GET'])
+def loadLogin():
+    if request.method == 'GET':
+        return render_template("login.html")
 
 
 
