@@ -1,15 +1,10 @@
 {% extends "standardPage.html" %}
 
-{% set title = "Basket" %}
+{% set title = "Payment" %}
 
 {% block content %}
 {{ super() }}
 
 {% include "basketSummary.html" %}
-
-<form action="/checkout/guestDetails">
-  <input type="submit" value="Checkout" />
-</form>
-
 
 {% endblock %}

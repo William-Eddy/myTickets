@@ -68,6 +68,11 @@ def loadBasket():
     if request.method == 'GET':
         return render_template("basket.html", basketData=getBasketData())
 
+@app.route('/checkout/payment', methods = ['GET'])
+def loadPayment():
+    if request.method == 'GET':
+        return render_template("payment.html", basketData=getBasketData())
+
 @app.route('/checkout/guestDetails', methods = ['GET','POST'])
 def guestDetails():
     if request.method == 'GET':
