@@ -118,7 +118,7 @@ def addToBasket():
        resp.set_cookie('basket', exisitngItems + performanceID+"."+quantity+"/")
        return resp
 
-@app.route('/login', methods = ['GET','POST'])
+@app.route('account/login', methods = ['GET','POST'])
 def loadLogin():
     if request.method == 'GET':
         errorMessage = ""
@@ -136,6 +136,14 @@ def loadLogin():
             # Account doesnt exist or username/password incorrect
             errorMessage = "Login failed."
     return render_template("login.html", msg = errorMessage)
+
+@app.route('account/logout', methods = ['GET'])
+def logout():
+    # Remove session data, this will log the user out
+   session.pop('loggedin', None)
+   session.pop('id', None)
+   # Redirect to login page
+   return redirect(url_for('account/login'))
 
 if __name__ == "__main__":
     app.run(debug=True, port=80, host='0.0.0.0')
