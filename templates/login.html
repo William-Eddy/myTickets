@@ -5,12 +5,14 @@
 
 Login
 
-<form>
+<form action="/login" method="post">
   <label for="emailAddress">Email Address:</label><br>
   <input type="text" id="emailAddress" name="emailAddress"><br>
   <label for="password">Password:</label><br>
   <input type="text" id="password" name="password"><br>
   <input type="submit" value="Login" /><br>
 </form>
+
+Message: {{msg}}
 
 {% endblock %}

@@ -1,8 +1,9 @@
 from flask import Flask, redirect, request,render_template, jsonify, send_from_directory, make_response, url_for, session
 import mysql.connector
-
+import re
 
 app = Flask(__name__)
+app.secret_key = 'L9cYyP73ZwT8G5Nk'
 
 def getDatabaseConnection():
     dbConnection = mysql.connector.connect(
@@ -21,14 +22,22 @@ def executeQuery(query, values=()):
     connection.close()
     return data
 
+def executeQueryOne(query, values=()):
+    connection = getDatabaseConnection()
+    cursor = connection.cursor(prepared=True)
+    cursor.execute(query,values)
+    data = cursor.fetchone()
+    connection.close()
+    return data
+
 def executeStatement(query, values=()):
     connection = getDatabaseConnection()
     cursor = connection.cursor(prepared=True)
     cursor.execute(query,values)
     connection.commit()
     connection.close()
-
     return None
+
 
 def getBasketData():
 
@@ -109,12 +118,24 @@ def addToBasket():
        resp.set_cookie('basket', exisitngItems + performanceID+"."+quantity+"/")
        return resp
 
-@app.route('/login', methods = ['GET'])
+@app.route('/login', methods = ['GET','POST'])
 def loadLogin():
     if request.method == 'GET':
-        return render_template("login.html")
-
-
+        errorMessage = ""
+    if request.method == 'POST' and 'emailAddress' in request.form and 'password' in request.form:
+        # Create variables for easy access
+        emailAddress = request.form['emailAddress']
+        password = request.form['password']
+        account = executeQueryOne("SELECT guestID FROM guests WHERE guestEmailAddress = %s AND guestPassword = %s",(emailAddress,password))
+        if account:
+            # Create session data, we can access this data in other routes
+            session['loggedin'] = True
+            session['id'] = account[0]
+            errorMessage = 'Logged in successfully!'
+        else:
+            # Account doesnt exist or username/password incorrect
+            errorMessage = "Login failed."
+    return render_template("login.html", msg = errorMessage)
 
 if __name__ == "__main__":
     app.run(debug=True, port=80, host='0.0.0.0')
