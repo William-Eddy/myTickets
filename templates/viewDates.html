@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>View dates</title>
+  </head>
+  <body>
+
+    <table>
+      <tr>
+        <th>performanceID</th>
+        <th>city</th>
+        <th>venue</th>
+        <th>date</th>
+      </tr>
+      {% for performance in performances %}
+      <tr>
+        <td>{{performance[0]}}</td>
+        <td>{{performance[1]}}</td>
+        <td>{{performance[2]}}</td>
+      </tr>
+      {% endfor %}
+    </table>
+
+  </body>
+</html>
