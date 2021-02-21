@@ -5,11 +5,16 @@
 {% block content %}
 {{ super() }}
 
-{% include "basketSummary.html" %}
+<h1 class="pageTitle">Basket</h1>
 
-<form action="/checkout/payment">
-  <input type="submit" value="Checkout" />
-</form>
+<div class="pagePad">
 
+  {% include "basketSummary.html" %}
+
+  <form action="/checkout/payment">
+    <input type="submit" class="button" id="checkoutButton" value="Checkout" />
+  </form>
+
+</div>
 
 {% endblock %}

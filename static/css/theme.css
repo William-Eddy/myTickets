@@ -150,3 +150,27 @@ nav ul li{
 .performanceTable tr:nth-child(odd){
   background-color: #f2f2f2;
 }
+
+.pagePad{
+  padding: 40px;
+}
+
+.basketTable td{
+  padding: 5px;
+  border: 1px solid lightGrey;
+}
+
+.basketTable th{
+  padding: 5px;
+  border: 1px solid lightGrey;
+}
+
+th{
+  text-align: left;
+}
+
+#checkoutButton{
+  margin-top: 30px;
+  font-size: 18px;
+  padding: 10px;
+}
