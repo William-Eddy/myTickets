@@ -60,6 +60,9 @@ def getCookieBasket():
 
     return result
 
+def getAccountData():
+    return executeQueryOne("SELECT * FROM guests WHERE guestID = %s",(session['id'],))
+
 @app.route("/upcomingEvents")
 def upcomingEvents():
     if request.method =='GET':
@@ -78,10 +81,13 @@ def loadBasket():
     if request.method == 'GET':
         return render_template("basket.html", basketData=getBasketData())
 
-@app.route('/checkout/payment', methods = ['GET'])
+@app.route('/checkout/payment', methods = ['GET','POST'])
 def loadPayment():
     if request.method == 'GET':
-        return render_template("payment.html", basketData=getBasketData())
+        if 'loggedin' in session:
+            return render_template("payment.html", basketData=getBasketData(), accountData=getAccountData())
+        else:
+            return render_template("login.html", msg = "")
 
 @app.route('/checkout/orderConfirmed', methods = ['GET'])
 def loadOrderConfirmed():
@@ -150,8 +156,7 @@ def register():
 @app.route('/account/profile', methods = ['GET'])
 def profile():
     if 'loggedin' in session:
-        account = executeQueryOne("SELECT * FROM guests WHERE guestID = %s",(session['id'],))
-        return render_template("profile.html", accountData=account)
+        return render_template("profile.html", accountData=getAccountData())
     else:
         return render_template("login.html", msg = "")
 
