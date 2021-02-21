@@ -13,6 +13,10 @@ Login
   <input type="submit" value="Login" /><br>
 </form>
 
-Message: {{msg}}
+{% if msg is defined %}
+    Message: {{msg}}
+{% endif %}
+
+
 
 {% endblock %}

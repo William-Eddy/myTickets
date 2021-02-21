@@ -60,8 +60,17 @@ def getCookieBasket():
 
     return result
 
-def getAccountData():
+def getGuestAccountData():
     return executeQueryOne("SELECT * FROM guests WHERE guestID = %s",(session['id'],))
+
+def getPromoterAccountData():
+    return executeQueryOne("SELECT * FROM promoters WHERE promoterID = %s",(session['id'],))
+
+def isLoggedIn():
+    if ('loggedin' in session) and (session['type'] == userType):
+        return True
+    else:
+        return False
 
 @app.route("/upcomingEvents")
 def upcomingEvents():
@@ -85,14 +94,14 @@ def loadBasket():
 def loadPayment():
     if request.method == 'GET':
         if 'loggedin' in session:
-            return render_template("payment.html", basketData=getBasketData(), accountData=getAccountData())
+            return render_template("payment.html", basketData=getBasketData(), guestData=getGuestAccountData())
         else:
             return render_template("login.html", msg = "")
 
 @app.route('/checkout/orderConfirmed', methods = ['GET'])
 def loadOrderConfirmed():
     if request.method == 'GET':
-        return render_template("orderConfirmed.html", basketData=getBasketData())
+        return render_template("orderConfirmed.html", basketData=getBasketData(), guestData=getGuestAccountData())
 
 @app.route('/basket/add', methods = ['POST'])
 def addToBasket():
@@ -110,29 +119,30 @@ def addToBasket():
 @app.route('/account/login', methods = ['GET','POST'])
 def loadLogin():
     if request.method == 'GET':
-        errorMessage = ""
+        return render_template("login.html")
     if request.method == 'POST' and 'emailAddress' in request.form and 'password' in request.form:
         # Create variables for easy access
         emailAddress = request.form['emailAddress']
         password = request.form['password']
-        account = executeQueryOne("SELECT guestID FROM guests WHERE guestEmailAddress = %s AND guestPassword = %s",(emailAddress,password))
-        if account:
+
+        guestAccount = executeQueryOne("SELECT guestID FROM guests WHERE guestEmailAddress = %s AND guestPassword = %s",(emailAddress,password))
+        if guestAccount:
             # Create session data, we can access this data in other routes
             session['loggedin'] = True
-            session['id'] = account[0]
-            errorMessage = 'Logged in successfully!'
-        else:
-            # Account doesnt exist or username/password incorrect
-            errorMessage = "Login failed."
-    return render_template("login.html", msg = errorMessage)
+            session['id'] = guestAccount[0]
+            session['type'] = "guest"
+            return render_template("profile.html", guestData=getGuestAccountData())
+
+        return render_template("login.html", msg = "Login details did not match our records. Please try again.")
 
 @app.route('/account/logout', methods = ['GET'])
 def logout():
     # Remove session data, this will log the user out
    session.pop('loggedin', None)
    session.pop('id', None)
+   session.pop('type', None)
    # Redirect to login page
-   return render_template("login.html", msg = "")
+   return render_template("login.html", msg = "You have been logged out")
 
 
 @app.route('/account/register', methods = ['GET','POST'])
@@ -151,14 +161,19 @@ def register():
 
         executeStatement("INSERT INTO guests (guestFirstName, guestLastName, guestEmailAddress, guestAddressLine1, guestAddressLine2, guestPostcode, guestMobileNumber, guestPassword) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",(firstName,lastName,emailAddress,addressLine1,addressLine2,postcode,mobileNumber,password,))
         guestID = (executeQuery("SELECT guestID FROM guests WHERE guestEmailAddress = %s",(emailAddress,)))[0][0]
-        return str(guestID)
+        session['loggedin'] = True
+        session['id'] = guestID
+        session['type'] = "guest"
+        return render_template("profile.html", guestData=getGuestAccountData())
 
 @app.route('/account/profile', methods = ['GET'])
 def profile():
-    if 'loggedin' in session:
-        return render_template("profile.html", accountData=getAccountData())
+    if isLoggedIn():
+        return render_template("profile.html", guestData=getGuestAccountData())
     else:
-        return render_template("login.html", msg = "")
+        return render_template("login.html", msg = "Please log in to continue")
+
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=80, host='0.0.0.0')
