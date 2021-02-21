@@ -14,17 +14,14 @@
 </div>
 
   <table class="performanceTable">
-    <tr>
-      <th>City</th>
-      <th>Venue</th>
-    </tr>
     {% for performance in performances %}
     <tr>
-      <td>{{performance[1]}}</td>
-      <td>{{performance[2]}}</td>
-      <td>
+      <td style="width:23%">{{performance[3]}}</td>
+      <td style="width:23%">{{performance[1]}}</td>
+      <td style="width:53%">{{performance[2]}}</td>
+      <td style="width:20%">
         <form onSubmit="return addToBasket({{performance[0]}},'test')">
-          <input type="submit" value="Tickets" />
+          <input type="submit" class="button" value="View Tickets" />
         </form>
       </td>
     </tr>
