@@ -99,3 +99,52 @@ nav ul li{
 .pageTitle{
   padding: 30px;
 }
+
+.spanBlurImage{
+  width: 100%;
+  object-fit: cover;
+  height: 400px;
+  -webkit-filter: blur(10px); /* Safari 6.0 - 9.0 */
+  filter: blur(10px);
+  margin: -10px;
+}
+
+.eventImageWrapper{
+  overflow: hidden;
+  width: 110%;
+  position: relative;
+  text-align: center;
+}
+
+.eventTextOverlay{
+  position: absolute;
+  top: 42%;
+  left: 4%;
+  text-align: left;
+}
+
+.eventTextOverlay h1{
+  color: white;
+  font-size: 38px;
+}
+
+.eventTextOverlay h2{
+  color: white;
+  font-size: 27px;
+}
+
+.performanceTable table{
+  width: 100%;
+}
+
+.performanceTable td{
+  padding: 15px;
+}
+
+.performanceTable tr:nth-child(even){
+  background-color: #f2f2f2;
+}
+
+table, th, td {
+  border: 0;
+}

@@ -5,15 +5,21 @@
 {% block content %}
 {{ super() }}
 
-  <table>
+<div class="eventImageWrapper">
+  <img class="spanBlurImage" src=/static/media/{{event[4]}}>
+  <div class="eventTextOverlay">
+    <h1>{{event[3]}}</h1>
+    <h2>{{event[2]}}</h2>
+  </div>
+</div>
+
+  <table class="performanceTable">
     <tr>
-      <th>performanceID</th>
-      <th>city</th>
-      <th>venue</th>
+      <th>City</th>
+      <th>Venue</th>
     </tr>
     {% for performance in performances %}
     <tr>
-      <td>{{performance[0]}}</td>
       <td>{{performance[1]}}</td>
       <td>{{performance[2]}}</td>
       <td>

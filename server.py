@@ -86,7 +86,8 @@ def viewDates(eventID):
     if request.method =='GET':
         eventID = int(eventID)
         performanceData = executeQuery("SELECT p.performanceID, v.venueCity, v.venueName, DATE_FORMAT(p.performanceDateTime, '%D %M %Y')AS date FROM performances p INNER JOIN venues v ON p.venueID = v.venueID WHERE p.eventID = %s",(eventID,))
-        return render_template("viewDates.html", performances=performanceData)
+        eventData = executeQuery("SELECT * FROM events WHERE eventID = %s",(eventID,))[0]
+        return render_template("viewDates.html", performances=performanceData, event=eventData)
 
 @app.route('/basket', methods = ['GET'])
 def loadBasket():
