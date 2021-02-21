@@ -11,13 +11,13 @@
     </tr>
     {% for product in basketData %}
     <tr>
-      <td style="width:10%">{{product[0][1]}}</td>
-      <td style="width:7%">{{product[0][2]}}</td>
-      <td style="width:7%">{{product[0][3]}}</td>
-      <td style="width:7%">{{product[0][4]}}</td>
-      <td style="width:7%">{{product[0][5]}}</td>
-      <td style="width:3%">{{product[1]}}</td>
-      <td style="width:0.1%">
+      <td>{{product[0][1]}}</td>
+      <td>{{product[0][2]}}</td>
+      <td>{{product[0][3]}}</td>
+      <td>{{product[0][4]}}</td>
+      <td>{{product[0][5]}}</td>
+      <td>{{product[1]}}</td>
+      <td>
         <form onSubmit="">
           <input type="submit" class="button" value="Remove" />
         </form>
@@ -25,4 +25,6 @@
     </tr>
     {% endfor %}
   </table>
+
+
 </div>
