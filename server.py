@@ -78,7 +78,7 @@ def isLoggedIn():
 @app.route("/upcomingEvents")
 def upcomingEvents():
     if request.method =='GET':
-        eventData = executeQuery("SELECT eventID, eventName, eventPerformer FROM events")
+        eventData = executeQuery("SELECT eventID, eventName, eventPerformer, eventImage FROM events")
         return render_template("upcomingEvents.html", events=eventData)
 
 @app.route("/upcomingEvents/viewDates/<eventID>")

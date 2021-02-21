@@ -5,12 +5,13 @@
 {% block content %}
 {{ super() }}
 
+<h1 class="pageTitle">Upcoming Events</h1>
 
 <div class="eventBlock">
   {% for event in events %}
 
   <div class="eventPreview">
-    <img src="/static/media/samFender.png">
+    <img src="/static/media/{{event[3]}}">
     <h2>{{event[2]}}</h2>
     <h3>{{event[1]}}</h3>
     <form action="upcomingEvents/viewDates/{{event[0]}}">

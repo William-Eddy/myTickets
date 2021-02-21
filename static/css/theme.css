@@ -39,7 +39,7 @@ nav ul li a{
 }
 
 nav ul li{
-  padding-right: 35px;
+  padding-right: 50px;
 }
 
 
@@ -84,6 +84,8 @@ nav ul li{
 
 .eventPreview img{
   width: 100%;
+  object-fit: cover;
+  height: 220px;
 }
 
 .button{
@@ -91,5 +93,9 @@ nav ul li{
   background-color: #005EC0;
   border: none;
   margin-top: 2px;
-  padding: 4px;
+  padding: 6px;
+}
+
+.pageTitle{
+  padding: 30px;
 }
