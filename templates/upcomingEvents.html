@@ -5,24 +5,20 @@
 {% block content %}
 {{ super() }}
 
-  <table>
-    <tr>
-      <th>eventID</th>
-      <th>Event</th>
-      <th>Performer</th>
-    </tr>
-    {% for event in events %}
-    <tr>
-      <td>{{event[0]}}</td>
-      <td>{{event[1]}}</td>
-      <td>{{event[2]}}</td>
-      <td>
-      <form action="upcomingEvents/viewDates/{{event[0]}}">
-        <input type="submit" value="View dates" />
-      </form>
-      </td>
-    </tr>
-    {% endfor %}
-  </table>
+
+<div class="eventBlock">
+  {% for event in events %}
+
+  <div class="eventPreview">
+    <img src="/static/media/samFender.png">
+    <h2>{{event[2]}}</h2>
+    <h3>{{event[1]}}</h3>
+    <form action="upcomingEvents/viewDates/{{event[0]}}">
+      <input type="submit" class="button" value="View dates" />
+    </form>
+  </div>
+
+  {% endfor %}
+</div>
 
 {% endblock %}

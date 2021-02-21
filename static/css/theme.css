@@ -5,6 +5,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    color: #005EC0;
 }
 
 a, a:link, a:visited {
@@ -42,7 +43,6 @@ nav ul li{
 }
 
 
-
 .horizontalList{
   list-style-type: none;
   text-align: right;
@@ -63,4 +63,33 @@ nav ul li{
   font-size:35px;
   padding: 25px;
   padding-left: 35px;
+  color: white;
+}
+
+.eventBlock{
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+
+}
+
+.eventPreview {
+  width: 300px;
+  margin: 5px;
+}
+
+.eventPreview > *{
+  padding-top: 5px;
+}
+
+.eventPreview img{
+  width: 100%;
+}
+
+.button{
+  color:white;
+  background-color: #005EC0;
+  border: none;
+  margin-top: 2px;
+  padding: 4px;
 }
