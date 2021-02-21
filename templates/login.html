@@ -5,7 +5,7 @@
 
 Login
 
-<form action="/account/login" method="post">
+<form onsubmit="return login()" method="post" id="loginForm">
   <label for="emailAddress">Email Address:</label><br>
   <input type="text" id="emailAddress" name="emailAddress"><br>
   <label for="password">Password:</label><br>
@@ -17,6 +17,39 @@ Login
     Message: {{msg}}
 {% endif %}
 
+{% endblock %}
+
+{% block script %}
+{{ super() }}
+
+<script>
+
+  function login() {
+    emailAddress = document.forms["loginForm"]["emailAddress"].value;
+    password = document.forms["loginForm"]["password"].value;
+    params = 'emailAddress='+emailAddress+'&password='+password;
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", '/account/login', true); // true is asynchronous
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.onload = function() {
+      if (xhttp.readyState === 4 && xhttp.status === 200) {
+        console.log(xhttp.responseText);
+
+        {% if successPage is defined %}
+          window.location.href = {{successPage}}
+        {% else %}
+          window.location.href = "/basket"
+        {% endif %}
+
+      } else {
+        console.error(xhttp.statusText);
+      }
+    };
+    xhttp.send(params);
+    return false;
+  }
+
+</script>
 
 
 {% endblock %}

@@ -70,7 +70,7 @@ def getPromoterAccountData():
     return executeQueryOne("SELECT * FROM promoters WHERE promoterID = %s",(session['id'],))
 
 def isLoggedIn():
-    if ('loggedin' in session) and (session['type'] == userType):
+    if ('loggedin' in session):
         return True
     else:
         return False
@@ -99,7 +99,7 @@ def loadPayment():
         if 'loggedin' in session:
             return render_template("payment.html", basketData=getBasketData(), guestData=getGuestAccountData())
         else:
-            return render_template("login.html", msg = "")
+            return render_template("login.html", successPage="/basket")
     if request.method == 'POST':
 
         guestID = session['id']
@@ -128,6 +128,7 @@ def addToBasket():
            exisitngItems = request.cookies.get('basket')
 
        resp = make_response(render_template('basket.html'))
+
        resp.set_cookie('basket', exisitngItems + performanceID+"."+quantity+"/")
        return resp
 
