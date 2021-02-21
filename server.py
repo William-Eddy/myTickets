@@ -1,6 +1,7 @@
 from flask import Flask, redirect, request,render_template, jsonify, send_from_directory, make_response, url_for, session
 import mysql.connector
 import re
+import time
 
 app = Flask(__name__)
 app.secret_key = 'L9cYyP73ZwT8G5Nk'
@@ -35,8 +36,10 @@ def executeStatement(query, values=()):
     cursor = connection.cursor(prepared=True)
     cursor.execute(query,values)
     connection.commit()
+    cursor.execute("SELECT LAST_INSERT_ID()")
+    id = cursor.fetchone()
     connection.close()
-    return None
+    return id[0]
 
 
 def getBasketData():
@@ -98,14 +101,16 @@ def loadPayment():
         else:
             return render_template("login.html", msg = "")
     if request.method == 'POST':
+
+        guestID = session['id']
+        transactionID = executeStatement("INSERT INTO transactions (guestID, transactionDateTime) VALUES (%s,%s)",(guestID, time.strftime('%Y-%m-%d %H:%M:%S')))
+
         basket = getBasketData()
         for ticket in basket:
-            guestID = session['id']
             performanceID = ticket[0][0]
-            print(performanceID)
             seatID = int(executeQuery("SELECT COUNT(*) FROM tickets WHERE performanceID = %s",(performanceID,))[0][0])
             print(seatID)
-            executeStatement("INSERT INTO tickets (guestID, performanceID, seatID) VALUES (%s,%s,%s)",(guestID,performanceID,seatID))
+            executeStatement("INSERT INTO tickets (guestID, performanceID, seatID, transactionID) VALUES (%s,%s,%s,%s)",(guestID,performanceID,seatID,transactionID))
         return render_template("orderConfirmed.html", guestData=getGuestAccountData())
 
 @app.route('/checkout/orderConfirmed', methods = ['GET'])
