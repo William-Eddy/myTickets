@@ -13,8 +13,33 @@ Payment
 
 PAYMENT API HERE
 
-<form action="/checkout/orderConfirmed">
+<form onsubmit="return processTransaction()">
   <input type="submit" value="Pay" />
 </form>
+
+{% endblock %}
+
+{% block script %}
+{{ super() }}
+
+<script>
+
+  function processTransaction() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", '/checkout/payment', true); // true is asynchronous
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.onload = function() {
+      if (xhttp.readyState === 4 && xhttp.status === 200) {
+        console.log(xhttp.responseText);
+      } else {
+        console.error(xhttp.statusText);
+      }
+    };
+    xhttp.send();
+    return false;
+  }
+
+</script>
+
 
 {% endblock %}

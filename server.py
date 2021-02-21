@@ -97,6 +97,16 @@ def loadPayment():
             return render_template("payment.html", basketData=getBasketData(), guestData=getGuestAccountData())
         else:
             return render_template("login.html", msg = "")
+    if request.method == 'POST':
+        basket = getBasketData()
+        for ticket in basket:
+            guestID = session['id']
+            performanceID = ticket[0][0]
+            print(performanceID)
+            seatID = int(executeQuery("SELECT COUNT(*) FROM tickets WHERE performanceID = %s",(performanceID,))[0][0])
+            print(seatID)
+            executeStatement("INSERT INTO tickets (guestID, performanceID, seatID) VALUES (%s,%s,%s)",(guestID,performanceID,seatID))
+        return render_template("orderConfirmed.html", guestData=getGuestAccountData())
 
 @app.route('/checkout/orderConfirmed', methods = ['GET'])
 def loadOrderConfirmed():
