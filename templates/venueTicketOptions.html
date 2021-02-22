@@ -5,25 +5,62 @@
 {% block content %}
 {{ super() }}
 
+<div class="eventImageWrapper">
+  <img class="spanBlurImage" src="/static/media/{{performanceData[5]}}" style="height:180px;">
+  <div class="peformanceTextOverlay">
+    <img class="eventImageRounded" src="/static/media/{{performanceData[5]}}">
+    <div class="performanceInfo">
+      <h2 class="bold">{{performanceData[6]}}</h2>
+      <h3 class="bold">{{performanceData[7]}}</h3>
+      <h4>{{performanceData[2]}} - {{performanceData[1]}}</h4>
+      <h4>{{performanceData[3]}} @ {{performanceData[8]}}</h4>
+    </div>
+  </div>
+</div>
 
-{{performanceData[0]}}
-{{performanceData[1]}}
-{{performanceData[2]}}
-{{performanceData[3]}}
-{{performanceData[4]}}
+<div class="ticketOption">
+  <h1>Ticket Options</h1>
+  <table>
+    <tr>
+      <th>Ticket</th>
+      <th>Price</th>
+    </tr>
+    {% for ticket in ticketOptions %}
+    <tr>
+      <td style="width:43%;">{{ticket[1]}}</td>
+      <td style="width:24%;">£{{ticket[2]}}</td>
+      <td class="ticketQuantityOptions">
+        {% if ticket[3] == 0 %}
+          <form onSubmit="">
+            <input type="submit" class="button round" value=" + " />
+          </form>
+          <form onSubmit="">
+            <input type="text" id="ticketQuantity" name="ticketQuantity" style="width:35px;text-align: center;" value="">
+          </form>
+          <form onSubmit="">
+            <input type="submit" class="button round" value=" - " />
+          </form>
+        {% else %}
+          <h5 class="soldOutMessage">--- SOLD OUT ---</h5>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
 
-<table>
-  <tr>
-    <th>Ticket</th>
-    <th>Price</th>
-  </tr>
-  {% for ticket in ticketOptions %}
-  <tr>
-    <td>{{ticket[1]}}</td>
-    <td>{{ticket[2]}}</td>
-  </tr>
-  {% endfor %}
-</table>
+  <form onsubmit="">
+    <input type="submit" class="button largeButton" value="Checkout" />
+  </form>
 
+</div>
+
+
+<div class="splitFlex">
+
+  <div class="venueSteaingImagePlaceholder">
+    <img src="/static/media/{{performanceData[4]}}" class="venueSteatingImage">
+  </div>
+
+</div>
 
 {% endblock %}

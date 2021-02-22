@@ -96,7 +96,7 @@ def viewVenueTicketOptions(performanceID):
         venueTicketOptionsQuery = """
         SELECT ptt.performanceTicketTypeID, vs.venueSeatName, ptt.performanceTicketTypePrice,
         CASE
-        	WHEN (SELECT COUNT(*) FROM tickets t INNER JOIN performances p ON p.performanceID = t.performanceID INNER JOIN venues v ON v.venueID = p.venueID WHERE p.performanceID = 1 AND t.performanceTicketTypeID = 1) < vs.venueSeatCapacity THEN False
+        	WHEN (SELECT COUNT(*) FROM tickets t INNER JOIN performances p ON p.performanceID = t.performanceID INNER JOIN venues v ON v.venueID = p.venueID WHERE p.performanceID = ptt.performanceID AND t.performanceTicketTypeID = ptt.performanceTicketTypeID) < vs.venueSeatCapacity THEN False
             ELSE True
         END AS soldOut
         FROM performanceTicketTypes ptt
@@ -104,7 +104,7 @@ def viewVenueTicketOptions(performanceID):
         ON vs.venueSeatingID = ptt.venueSeatingID
         WHERE ptt.performanceID = %s"""
 
-        performanceData = executeQuery("SELECT p.performanceID, v.venueCity, v.venueName, DATE_FORMAT(p.performanceDateTime, '%D %M %Y')AS date, v.venueSeatingImage FROM performances p INNER JOIN venues v ON p.venueID = v.venueID WHERE p.performanceID = %s",(performanceID,))[0]
+        performanceData = executeQuery("SELECT p.performanceID, v.venueCity, v.venueName, DATE_FORMAT(p.performanceDateTime, '%D %M %Y')AS date, v.venueSeatingImage, e.eventImage, e.eventName, e.eventPerformer, DATE_FORMAT(p.performanceDateTime, '%H:%i')AS time FROM performances p INNER JOIN venues v ON p.venueID = v.venueID INNER JOIN events e ON e.eventID = p.eventID WHERE p.performanceID = %s",(performanceID,))[0]
         venueTicketOptions = executeQuery(venueTicketOptionsQuery,(int(performanceID),))
 
         print("TICKET OPTIONS: ")

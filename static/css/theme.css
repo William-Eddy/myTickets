@@ -108,11 +108,11 @@ nav ul li{
 .spanBlurImage{
   width: 100%;
   object-fit: cover;
-  height: 400px;
   -webkit-filter: blur(10px); /* Safari 6.0 - 9.0 */
   filter: blur(10px);
   margin: -10px;
 }
+
 
 .eventImageWrapper{
   overflow: hidden;
@@ -136,6 +136,11 @@ nav ul li{
 .eventTextOverlay h2{
   color: white;
   font-size: 27px;
+}
+
+.eventTextOverlay h3{
+  color: white;
+  font-size: 20px;
 }
 
 .performanceTable table{
@@ -202,6 +207,7 @@ input:focus{
 .orderSummary{
   width:30%;
   background-color: #F0F0F0;
+  min-width: 350px;
 }
 
 .orderSummaryDetails, .orderSummaryTitle{
@@ -218,10 +224,11 @@ input:focus{
   height: 220px;
 }
 
-.checkout{
+.splitFlex{
   display: flex;
   justify-content: space-around;
   margin: 35px;
+  flex-wrap: wrap;
 }
 
 .inputFrame{
@@ -230,7 +237,86 @@ input:focus{
   width: 250px;
 }
 
-
 form h2{
   padding-bottom: 15px;
+}
+
+.venueSteatingImage{
+  height: 420px;
+}
+
+.venueSteaingImagePlaceholder{
+  padding: 40px;
+  padding-left: 80px;
+  padding-right: 80px;
+  border: 1px solid lightGrey;
+}
+
+.ticketOption{
+  width:35%;
+  min-width: 505px;
+  box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;
+  float: right;
+  overflow: auto;
+  min-height: 650px;
+  padding: 40px;
+}
+
+.ticketOption table{
+  font-size: 20px;
+}
+
+.ticketOption table td{
+  padding-top: 10px;
+}
+
+.round{
+  border-radius: 50%;
+  height: 35px;
+  width: 35px;
+  padding: 8px;
+}
+
+.ticketQuantityOptions > *{
+  display: inline-block;
+  padding-left: 7px;
+}
+
+.ticketOption h1{
+  padding-bottom: 30px;
+}
+
+.eventImageRounded{
+  border-radius: 5px;
+  height: 100px;
+}
+
+.peformanceTextOverlay{
+  position: absolute;
+  top: 20%;
+  left: 4%;
+  text-align: left;
+  display: inline-block;
+}
+
+.performanceInfo{
+  display: inline-block;
+  padding-left: 20px;
+  vertical-align:top;
+  margin-top: 7px;
+
+}
+
+.performanceInfo > *{
+  color: white;
+  font-weight: normal;
+}
+
+.bold{
+  font-weight: bold;
+}
+
+.soldOutMessage{
+  color: lightgrey;
+  text-align: right;
 }
