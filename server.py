@@ -89,6 +89,27 @@ def viewDates(eventID):
         eventData = executeQuery("SELECT * FROM events WHERE eventID = %s",(eventID,))[0]
         return render_template("viewDates.html", performances=performanceData, event=eventData)
 
+@app.route("/performances/<performanceID>/venueTicketOptions")
+def viewVenueTicketOptions(performanceID):
+    if request.method =='GET':
+
+        venueTicketOptionsQuery = """
+        SELECT vs.venueSeatName, ptt.performanceTicketTypePrice,
+        CASE
+        	WHEN (SELECT COUNT(*) FROM tickets t INNER JOIN performances p ON p.performanceID = t.performanceID INNER JOIN venues v ON v.venueID = p.venueID WHERE p.performanceID = 1 AND t.performanceTicketTypeID = 1) < vs.venueSeatCapacity THEN False
+            ELSE True
+        END AS soldOut
+        FROM performanceTicketTypes ptt
+        INNER JOIN venueSeating vs
+        ON vs.venueSeatingID = ptt.venueSeatingID
+        WHERE ptt.performanceID = %s"""
+
+        performanceData = executeQuery("SELECT p.performanceID, v.venueCity, v.venueName, DATE_FORMAT(p.performanceDateTime, '%D %M %Y')AS date, v.venueSeatingImage FROM performances p INNER JOIN venues v ON p.venueID = v.venueID WHERE p.performanceID = %s",(performanceID,))[0]
+        venueTicketOptions = executeQuery(venueTicketOptions,(performanceID,))
+
+        return render_template("venueTicketOptions.html", ticketOptions=venueTicketOptions, performanceData = performanceData)
+
+
 @app.route('/basket', methods = ['GET'])
 def loadBasket():
     if request.method == 'GET':
