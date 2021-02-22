@@ -94,7 +94,7 @@ def viewVenueTicketOptions(performanceID):
     if request.method =='GET':
 
         venueTicketOptionsQuery = """
-        SELECT vs.venueSeatName, ptt.performanceTicketTypePrice,
+        SELECT ptt.performanceTicketTypeID, vs.venueSeatName, ptt.performanceTicketTypePrice,
         CASE
         	WHEN (SELECT COUNT(*) FROM tickets t INNER JOIN performances p ON p.performanceID = t.performanceID INNER JOIN venues v ON v.venueID = p.venueID WHERE p.performanceID = 1 AND t.performanceTicketTypeID = 1) < vs.venueSeatCapacity THEN False
             ELSE True
@@ -105,7 +105,10 @@ def viewVenueTicketOptions(performanceID):
         WHERE ptt.performanceID = %s"""
 
         performanceData = executeQuery("SELECT p.performanceID, v.venueCity, v.venueName, DATE_FORMAT(p.performanceDateTime, '%D %M %Y')AS date, v.venueSeatingImage FROM performances p INNER JOIN venues v ON p.venueID = v.venueID WHERE p.performanceID = %s",(performanceID,))[0]
-        venueTicketOptions = executeQuery(venueTicketOptions,(performanceID,))
+        venueTicketOptions = executeQuery(venueTicketOptionsQuery,(int(performanceID),))
+
+        print("TICKET OPTIONS: ")
+        print(venueTicketOptions)
 
         return render_template("venueTicketOptions.html", ticketOptions=venueTicketOptions, performanceData = performanceData)
 

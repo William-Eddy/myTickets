@@ -20,7 +20,7 @@
       <td style="width:23%">{{performance[1]}}</td>
       <td style="width:53%">{{performance[2]}}</td>
       <td style="width:20%">
-        <form onSubmit="return addToBasket({{performance[0]}},'test')">
+        <form action="/performances/{{performance[0]}}/venueTicketOptions">
           <input type="submit" class="button" value="View Tickets" />
         </form>
       </td>

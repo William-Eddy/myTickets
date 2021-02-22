@@ -1,10 +1,29 @@
 {% extends "standardPage.html" %}
 
-{% set title = "Payment" %}
+{% set title = "Venue Ticket Options" %}
 
 {% block content %}
 {{ super() }}
 
+
+{{performanceData[0]}}
+{{performanceData[1]}}
+{{performanceData[2]}}
+{{performanceData[3]}}
+{{performanceData[4]}}
+
+<table>
+  <tr>
+    <th>Ticket</th>
+    <th>Price</th>
+  </tr>
+  {% for ticket in ticketOptions %}
+  <tr>
+    <td>{{ticket[1]}}</td>
+    <td>{{ticket[2]}}</td>
+  </tr>
+  {% endfor %}
+</table>
 
 
 {% endblock %}
