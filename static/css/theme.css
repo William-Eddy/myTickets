@@ -102,6 +102,7 @@ nav ul li{
 
 .pageTitle{
   padding: 30px;
+  padding-bottom: 5px;
 }
 
 .spanBlurImage{
@@ -174,8 +175,62 @@ th{
   text-align: left;
 }
 
-#checkoutButton{
+.largeButton{
   margin-top: 30px;
   font-size: 18px;
   padding: 10px;
+}
+
+input{
+  font-size: 17px;
+  border: 1px solid lightGrey;
+  border-radius: 1px;
+  padding: 6px;
+  color: black;
+  margin-top: 4px;
+  margin-bottom: 13px;
+}
+
+label{
+  color: grey;
+}
+
+input:focus{
+  border: 1px solid #005EC0;
+}
+
+.orderSummary{
+  width:30%;
+  background-color: #F0F0F0;
+}
+
+.orderSummaryDetails, .orderSummaryTitle{
+  padding: 22px;
+}
+
+.orderSummary h1{
+  color: #303030;
+}
+
+.orderSummary img{
+  width: 100%;
+  object-fit: cover;
+  height: 220px;
+}
+
+.checkout{
+  display: flex;
+  justify-content: space-around;
+  margin: 35px;
+}
+
+.inputFrame{
+  border: 1px solid lightGrey;
+  padding: 15px;
+  width: 250px;
+}
+
+
+form h2{
+  padding-bottom: 15px;
 }

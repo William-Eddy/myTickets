@@ -5,15 +5,57 @@
 {% block content %}
 {{ super() }}
 
-<h1 class="pageTitle">Checkout</h1>
+<div class="checkout">
 
-{% include "guestInfo.html" %}
+  <div>
+    <form>
+      <h2>Guest details</h2>
+      <label for="firstName">First name</label><br>
+      <input type="text" id="firstName" name="firstName" value="{{guestData[1]}}"><br>
+      <label for="lastName">Last name</label><br>
+      <input type="text" id="lastName" name="lastName" value="{{guestData[2]}}"><br>
+      <label for="emailAddress">Email Address</label><br>
+      <input type="text" id="emailAddress" name="emailAddress" style="width:300px;" value="{{guestData[3]}}"><br>
+      <label for="addressLine1">Address Line 1</label><br>
+      <input type="text" id="addressLine1" name="addressLine1" style="width:280px;" value="{{guestData[4]}}"><br>
+      <label for="addressLine2">Address Line 2</label><br>
+      <input type="text" id="addressLine2" name="addressLine2" style="width:280px;" value="{{guestData[5]}}"><br>
+      <label for="postcode">Postcode</label><br>
+      <input type="text" id="postcode" name="postcode" style="width:150px;" value="{{guestData[6]}}"><br>
+      <label for="mobileNumber">Mobile Number</label><br>
+      <input type="text" id="mobileNumber" name="mobileNumber" value="{{guestData[7]}}"><br>
+    </form>
+  </div>
 
-PAYMENT API HERE
+  <div>
+    <form>
+      <h2>Ticket Delivery</h2>
+      <div class="inputFrame">
+        <input type="radio" id="eTicket" name="eTicket" value="eTicket">
+        <label for="eTicket">e-Ticket (FREE)</label><br>
+        <input type="radio" id="postedTicket" name="postedTicket" value="postedTicket">
+        <label for="postedTicket">Posted Ticket (£3.95)</label><br>
+      </div>
+    </form>
 
-<form onsubmit="return processTransaction()">
-  <input type="submit" value="Pay" />
-</form>
+    <form onsubmit="return processTransaction()">
+      <input type="submit" class="button largeButton" value="Checkout" />
+    </form>
+
+  </div>
+
+  <div class="orderSummary">
+    <div class="orderSummaryTitle">
+      <h1>Your tickets</h1>
+    </div>
+    <img src="/static/media/samFender.png">
+    <div class="orderSummaryDetails">
+      <h1>Order summary</h1>
+    </div>
+  </div>
+
+</div>
+
 
 {% endblock %}
 
