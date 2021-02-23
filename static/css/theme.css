@@ -111,6 +111,7 @@ nav ul li{
   -webkit-filter: blur(10px); /* Safari 6.0 - 9.0 */
   filter: blur(10px);
   margin: -10px;
+  height:380px;
 }
 
 
@@ -206,7 +207,7 @@ input:focus{
 
 .orderSummary{
   width:30%;
-  background-color: #F0F0F0;
+  background-color: #F8F8F8;
   min-width: 350px;
 }
 
@@ -214,9 +215,11 @@ input:focus{
   padding: 22px;
 }
 
-.orderSummary h1{
-  color: #303030;
+.orderSummaryDetails > *{
+  color: grey;
+  font-weight: normal;
 }
+
 
 .orderSummary img{
   width: 100%;
@@ -258,7 +261,7 @@ form h2{
   box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;
   float: right;
   overflow: auto;
-  min-height: 650px;
+  min-height: 580px;
   padding: 40px;
 }
 
@@ -349,4 +352,8 @@ form h2{
 
 #totalTicketValue{
   padding-top: 40px;
+}
+
+.blue{
+  color: #005EC0;
 }

@@ -51,7 +51,7 @@
 
   <h2 id="totalTicketValue">Total: £0.00</h2>
 
-  <form onsubmit="return false" onClick="return totalTicketQuantity()">
+  <form onsubmit="return false" onClick="return checkout()">
     <input type="submit" class="button largeButton" value="Checkout" />
   </form>
 
@@ -133,6 +133,24 @@
 
   function setTotalOrderValueText(){
     document.getElementById("totalTicketValue").innerHTML = "Total: £" + getTotalOrderValue().toFixed(2);
+  }
+
+</script>
+
+<script>
+
+  function checkout() {
+
+    ticketList = "";
+
+    {% for ticket in ticketOptions %}
+      ticketList += "{{ticket[0]}}." + document.forms["ticketTypeQuantites{{ticket[0]}}"]["ticketQuantity"].value + "/";
+    {% endfor %}
+
+    document.cookie = "performanceID={{performanceData[0]}}; path=/";
+    document.cookie = "tickets=" + ticketList + "; path=/";
+
+    window.location.href = "/checkout/payment";
   }
 
 </script>

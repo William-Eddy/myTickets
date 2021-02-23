@@ -41,33 +41,42 @@ def executeStatement(query, values=()):
     connection.close()
     return id[0]
 
-
-def getBasketData():
-
-    basket = getCookieBasket()
-
-    for product in basket:
-        eventID = product[0]
-        product[0] = (executeQuery("SELECT p.performanceID, e.eventName, e.eventPerformer, v.venueName, v.venueCity, DATE_FORMAT(p.performanceDateTime, '%D %M %Y')AS date FROM performances p INNER JOIN events e ON e.eventID = p.eventID INNER JOIN venues v ON v.venueID = p.venueID WHERE e.eventID = %s",(eventID,)))[0]
-
-    return basket
-
-def getCookieBasket():
-    basket = request.cookies.get("basket").split("/")
-    basket.pop()
+def getCookieTickets():
+    tickets = request.cookies.get("tickets").split("/")
+    tickets.pop()
     result = []
 
-    for product in basket:
-        productSplit = product.split(".")
-        result.append(productSplit)
+    for ticket in tickets:
+        ticketSplit = ticket.split(".")
+        result.append(ticketSplit)
 
     return result
+
+def getSelectedTickets():
+    tickets = getCookieTickets()
+    print(tickets)
+    result = []
+    for ticket in tickets:
+        print(ticket[0])
+        result.append([executeQueryOne("SELECT vs.venueSeatName, ptt.performanceTicketTypePrice FROM performanceTicketTypes ptt INNER JOIN venueSeating vs ON vs.venueSeatingID = ptt.venueSeatingID WHERE ptt.performanceTicketTypeID = %s",(ticket[0],)),ticket[1]])
+    print(result)
+    return result
+
+
+def getOrderTotal():
+    total = 0.00;
+    for ticket in getSelectedTickets():
+        total += float(ticket[0][1]) * int(ticket[1])
+    return "{:.2f}".format(total)
 
 def getGuestAccountData():
     return executeQueryOne("SELECT * FROM guests WHERE guestID = %s",(session['id'],))
 
 def getPromoterAccountData():
     return executeQueryOne("SELECT * FROM promoters WHERE promoterID = %s",(session['id'],))
+
+def getPerformanceData(performanceID):
+    return executeQuery("SELECT p.performanceID, v.venueCity, v.venueName, DATE_FORMAT(p.performanceDateTime, '%D %M %Y')AS date, v.venueSeatingImage, e.eventImage, e.eventName, e.eventPerformer, DATE_FORMAT(p.performanceDateTime, '%H:%i')AS time, p.performanceTicketLimit FROM performances p INNER JOIN venues v ON p.venueID = v.venueID INNER JOIN events e ON e.eventID = p.eventID WHERE p.performanceID = %s",(performanceID,))[0]
 
 def isLoggedIn():
     if ('loggedin' in session):
@@ -104,7 +113,7 @@ def viewVenueTicketOptions(performanceID):
         ON vs.venueSeatingID = ptt.venueSeatingID
         WHERE ptt.performanceID = %s"""
 
-        performanceData = executeQuery("SELECT p.performanceID, v.venueCity, v.venueName, DATE_FORMAT(p.performanceDateTime, '%D %M %Y')AS date, v.venueSeatingImage, e.eventImage, e.eventName, e.eventPerformer, DATE_FORMAT(p.performanceDateTime, '%H:%i')AS time, p.performanceTicketLimit FROM performances p INNER JOIN venues v ON p.venueID = v.venueID INNER JOIN events e ON e.eventID = p.eventID WHERE p.performanceID = %s",(performanceID,))[0]
+        performanceData = getPerformanceData(performanceID)
         venueTicketOptions = executeQuery(venueTicketOptionsQuery,(int(performanceID),))
 
 
@@ -114,18 +123,16 @@ def viewVenueTicketOptions(performanceID):
         return render_template("venueTicketOptions.html", ticketOptions=venueTicketOptions, performanceData = performanceData)
 
 
-@app.route('/basket', methods = ['GET'])
-def loadBasket():
-    if request.method == 'GET':
-        return render_template("basket.html", basketData=getBasketData())
-
 @app.route('/checkout/payment', methods = ['GET','POST'])
 def loadPayment():
     if request.method == 'GET':
         if 'loggedin' in session:
-            return render_template("payment.html", basketData=getBasketData(), guestData=getGuestAccountData())
+            performanceID = request.cookies.get("performanceID")
+            performanceData = getPerformanceData(performanceID)
+            orderTotal = getOrderTotal()
+            return render_template("payment.html", performanceData = performanceData, ticketData=getSelectedTickets(), guestData=getGuestAccountData(), orderTotal = orderTotal)
         else:
-            return render_template("login.html", successPage="/basket")
+            return render_template("login.html", successPage="/upcomingEvents")
     if request.method == 'POST':
 
         guestID = session['id']
@@ -143,20 +150,6 @@ def loadPayment():
 def loadOrderConfirmed():
     if request.method == 'GET':
         return render_template("orderConfirmed.html", basketData=getBasketData(), guestData=getGuestAccountData())
-
-@app.route('/basket/add', methods = ['POST'])
-def addToBasket():
-   if request.method == 'POST':
-       performanceID = request.form['performanceID']
-       quantity = request.form['quantity']
-       exisitngItems = ""
-       if 'basket' in request.cookies:
-           exisitngItems = request.cookies.get('basket')
-
-       resp = make_response(render_template('basket.html'))
-
-       resp.set_cookie('basket', exisitngItems + performanceID+"."+quantity+"/")
-       return resp
 
 @app.route('/account/login', methods = ['GET','POST'])
 def loadLogin():

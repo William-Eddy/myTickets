@@ -48,11 +48,34 @@
     <div class="orderSummaryTitle">
       <h1>Your tickets</h1>
     </div>
-    <img src="/static/media/samFender.png">
+    <img src="/static/media/{{performanceData[5]}}">
     <div class="orderSummaryDetails">
-      <h1>Order summary</h1>
+      <h2 class="bold">{{performanceData[6]}}</h2>
+      <h4 class="bold">{{performanceData[7]}}</h4><br>
+      <h4>{{performanceData[2]}} - {{performanceData[1]}}</h4>
+      <h4>{{performanceData[3]}} @ {{performanceData[8]}}</h4>
+
+      <table><br>
+        <tr>
+          <th>Ticket</th>
+          <th>Price</th>
+          <th>Quantity</th>
+        </tr>
+        {% for ticket in ticketData %}
+        <tr>
+          <td style="width:45%;">{{ticket[0][0]}}</td>
+          <td style="width:35%;">£{{ticket[0][1]}}</td>
+          <td style="width:24%;">{{ticket[1]}}</td>
+        </tr>
+        {% endfor %}
+      </table><br>
+
+      <h1 class="bold blue">£{{orderTotal}}</h1>
+
     </div>
+
   </div>
+
 
 </div>
 
