@@ -68,7 +68,7 @@
 <div class="errorMessage">
   <img class="icon" src="/static/media/warning.png">
   <div class="errorMessageText">
-    <h4>The maximum tickets per household is 4 blah blah</h4>
+    <h4>The maximum tickets per household is {{performanceData[9]}}</h4>
   </div>
 </div>
 
@@ -96,7 +96,7 @@
     {% for ticket in ticketOptions %}
       totalQuantity += + document.forms["ticketTypeQuantites{{ticket[0]}}"]["ticketQuantity"].value;
     {% endfor %}
-    console.log(totalQuantity);
+    return totalQuantity;
   }
 
 </script>
@@ -109,7 +109,7 @@
     if (proposedQuantity < 0){
       console.log("Ticket already at 0")
     }
-    else if (proposedQuantity > {{performanceData[9]}}){
+    else if ((totalTicketQuantity() + increase) > {{performanceData[9]}}){
       console.log("Ticket limit reached!")
     }
     else{
