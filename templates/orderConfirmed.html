@@ -3,10 +3,31 @@
 {% block content %}
 {{ super() }}
 
-Order confirmed
+<h1>Order confirmed</h1>
 
 {% include "guestInfo.html" %}
 
-{% include "basketSummary.html" %}
+{{transactionData[0]}}
+{{transactionData[1]}}
+{{transactionData[2]}}
+{{transactionData[3]}}
+{{transactionData[4]}}
+{{transactionData[5]}}
+
+
+<table><br>
+  <tr>
+    <th>Seating</th>
+    <th>Seat Number</th>
+    <th>Cost</th>
+  </tr>
+  {% for ticket in ticketData %}
+  <tr>
+    <td style="width:45%;">{{ticket[0]}}</td>
+    <td style="width:45%;">{{ticket[1]}}</td>
+    <td style="width:24%;">£{{ticket[2]}}</td>
+  </tr>
+  {% endfor %}
+</table><br>
 
 {% endblock %}

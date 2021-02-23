@@ -102,19 +102,8 @@ def viewDates(eventID):
 def viewVenueTicketOptions(performanceID):
     if request.method =='GET':
 
-        venueTicketOptionsQuery = """
-        SELECT ptt.performanceTicketTypeID, vs.venueSeatName, ptt.performanceTicketTypePrice,
-        CASE
-        	WHEN (SELECT COUNT(*) FROM tickets t INNER JOIN performances p ON p.performanceID = t.performanceID INNER JOIN venues v ON v.venueID = p.venueID WHERE p.performanceID = ptt.performanceID AND t.performanceTicketTypeID = ptt.performanceTicketTypeID) < vs.venueSeatCapacity THEN False
-            ELSE True
-        END AS soldOut
-        FROM performanceTicketTypes ptt
-        INNER JOIN venueSeating vs
-        ON vs.venueSeatingID = ptt.venueSeatingID
-        WHERE ptt.performanceID = %s"""
-
         performanceData = getPerformanceData(performanceID)
-        venueTicketOptions = executeQuery(venueTicketOptionsQuery,(int(performanceID),))
+        venueTicketOptions = executeQuery("SELECT * FROM ticket_option_view WHERE performanceID=%s",(int(performanceID),))
 
         return render_template("venueTicketOptions.html", ticketOptions=venueTicketOptions, performanceData = performanceData)
 
@@ -144,21 +133,18 @@ def loadPayment():
                 seatID = int(executeQuery("SELECT COUNT(*) FROM tickets WHERE performanceTicketTypeID = %s",(performanceTicketTypeID,))[0][0])
                 executeStatement("INSERT INTO tickets (transactionID, seatID, performanceTicketTypeID, ticketCost) VALUES (%s,%s,%s,%s)",(transactionID, seatID, performanceTicketTypeID, price))
 
+        resp = make_response()
         resp.set_cookie('performanceID', '', expires=0)
         resp.set_cookie('tickets', '', expires=0)
 
-        return "Ok"
+        return str(transactionID)
 
 @app.route('/checkout/orderConfirmed/<transactionID>', methods = ['GET'])
-def loadOrderConfirmed():
+def loadOrderConfirmed(transactionID):
     if request.method == 'GET':
-
-
-
-
-
-
-        return render_template("orderConfirmed.html", basketData=getBasketData(), guestData=getGuestAccountData())
+        transactionData = executeQuery("SELECT * FROM transaction_view WHERE transactionID = %s",(transactionID,))
+        ticketData = executeQuery("SELECT venueSeatName, seatID, TRUNCATE(ticketCost,2) FROM ticket_view WHERE transactionID = %s",(transactionID,))
+        return render_template("orderConfirmed.html", transactionData=transactionData, guestData=getGuestAccountData(), ticketData=ticketData)
 
 @app.route('/account/login', methods = ['GET','POST'])
 def loadLogin():

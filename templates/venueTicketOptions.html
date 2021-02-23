@@ -27,10 +27,10 @@
     </tr>
     {% for ticket in ticketOptions %}
     <tr>
-      <td style="width:43%;">{{ticket[1]}}</td>
-      <td style="width:24%;">£{{ticket[2]}}</td>
+      <td style="width:43%;">{{ticket[2]}}</td>
+      <td style="width:24%;">£{{ticket[3]}}</td>
       <td class="ticketQuantityOptions">
-        {% if ticket[3] == 0 %}
+        {% if ticket[4] == 0 %}
           <form onSubmit="return false" onClick="return decreaseTicketQuantity({{ticket[0]}})">
             <input type="submit" class="button round" value=" - " />
           </form>
@@ -126,7 +126,7 @@
     var totalCost = 0.00;
     {% for ticket in ticketOptions %}
       ticketQuantity = document.forms["ticketTypeQuantites{{ticket[0]}}"]["ticketQuantity"].value;
-      totalCost += {{ticket[2]}} * ticketQuantity;
+      totalCost += {{ticket[3]}} * ticketQuantity;
     {% endfor %}
     return totalCost;
   }
