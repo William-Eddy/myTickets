@@ -31,11 +31,11 @@
       <td style="width:24%;">£{{ticket[2]}}</td>
       <td class="ticketQuantityOptions">
         {% if ticket[3] == 0 %}
-          <form onSubmit="">
+          <form onSubmit="return false" onClick="return increaseTicketQuantity({{ticket[0]}})">
             <input type="submit" class="button round" value=" + " />
           </form>
-          <form onSubmit="">
-            <input type="text" id="ticketQuantity" name="ticketQuantity" style="width:35px;text-align: center;" value="">
+          <form id="ticketTypeQuantites{{ticket[0]}}">
+            <input type="text" id="ticketQuantity" name="ticketQuantity" style="width:35px;text-align: center;" value="0">
           </form>
           <form onSubmit="">
             <input type="submit" class="button round" value=" - " />
@@ -70,5 +70,20 @@
     <h4>The maximum tickets per household is 4 blah blah</h4>
   </div>
 </div>
+
+{% endblock %}
+
+{% block script %}
+{{ super() }}
+
+<script>
+
+  function increaseTicketQuantity(peformanceTicketTypeID){
+    exisitingQuantity = document.forms["ticketTypeQuantites" + peformanceTicketTypeID]["ticketQuantity"].value;
+
+    document.forms["ticketTypeQuantites" + peformanceTicketTypeID]["ticketQuantity"].value = parseInt(exisitingQuantity) + 1;
+  }
+
+</script>
 
 {% endblock %}
