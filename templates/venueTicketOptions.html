@@ -49,6 +49,8 @@
     {% endfor %}
   </table>
 
+  <h2 id="totalTicketValue">Total: £0.00</h2>
+
   <form onsubmit="return false" onClick="return totalTicketQuantity()">
     <input type="submit" class="button largeButton" value="Checkout" />
   </form>
@@ -115,6 +117,22 @@
     else{
       document.forms["ticketTypeQuantites" + peformanceTicketTypeID]["ticketQuantity"].value = proposedQuantity;
     }
+    setTotalOrderValueText()
+  }
+
+
+  function getTotalOrderValue(){
+    var ticketQuantity = 0;
+    var totalCost = 0.00;
+    {% for ticket in ticketOptions %}
+      ticketQuantity = document.forms["ticketTypeQuantites{{ticket[0]}}"]["ticketQuantity"].value;
+      totalCost += {{ticket[2]}} * ticketQuantity;
+    {% endfor %}
+    return totalCost;
+  }
+
+  function setTotalOrderValueText(){
+    document.getElementById("totalTicketValue").innerHTML = "Total: £" + getTotalOrderValue().toFixed(2);
   }
 
 </script>

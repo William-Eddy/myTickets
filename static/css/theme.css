@@ -346,3 +346,7 @@ form h2{
   vertical-align: middle;
   padding-right: 13px;
 }
+
+#totalTicketValue{
+  padding-top: 40px;
+}
