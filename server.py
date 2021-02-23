@@ -132,22 +132,32 @@ def loadPayment():
     if request.method == 'POST':
 
         guestID = session['id']
-        transactionID = executeStatement("INSERT INTO transactions (guestID, transactionDateTime) VALUES (%s,%s)",(guestID, time.strftime('%Y-%m-%d %H:%M:%S')))
-
         performanceID = request.cookies.get("performanceID")
+        transactionID = executeStatement("INSERT INTO transactions (guestID, performanceID, transactionDateTime) VALUES (%s,%s,%s)",(guestID, performanceID, time.strftime('%Y-%m-%d %H:%M:%S')))
+
         tickets = getCookieTickets()
         for ticket in tickets:
             quantity = int(ticket[1])
             for i in range(quantity):
                 performanceTicketTypeID = int(ticket[0])
-                seatID = int(executeQuery("SELECT COUNT(*) FROM tickets WHERE performanceID = %s and performanceTicketTypeID = %s",(performanceID,performanceTicketTypeID))[0][0])
-                executeStatement("INSERT INTO tickets (guestID, performanceID, seatID, transactionID, performanceTicketTypeID) VALUES (%s,%s,%s,%s,%s)",(guestID,performanceID,seatID,transactionID,performanceTicketTypeID))
+                price = executeQueryOne("SELECT performanceTicketTypePrice from performanceTicketTypes WHERE performanceTicketTypeID = %s",(performanceTicketTypeID,))[0]
+                seatID = int(executeQuery("SELECT COUNT(*) FROM tickets WHERE performanceTicketTypeID = %s",(performanceTicketTypeID,))[0][0])
+                executeStatement("INSERT INTO tickets (transactionID, seatID, performanceTicketTypeID, ticketCost) VALUES (%s,%s,%s,%s)",(transactionID, seatID, performanceTicketTypeID, price))
+
+        resp.set_cookie('performanceID', '', expires=0)
+        resp.set_cookie('tickets', '', expires=0)
 
         return "Ok"
 
-@app.route('/checkout/orderConfirmed', methods = ['GET'])
+@app.route('/checkout/orderConfirmed/<transactionID>', methods = ['GET'])
 def loadOrderConfirmed():
     if request.method == 'GET':
+
+
+
+
+
+
         return render_template("orderConfirmed.html", basketData=getBasketData(), guestData=getGuestAccountData())
 
 @app.route('/account/login', methods = ['GET','POST'])
