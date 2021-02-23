@@ -104,8 +104,9 @@ def viewVenueTicketOptions(performanceID):
         ON vs.venueSeatingID = ptt.venueSeatingID
         WHERE ptt.performanceID = %s"""
 
-        performanceData = executeQuery("SELECT p.performanceID, v.venueCity, v.venueName, DATE_FORMAT(p.performanceDateTime, '%D %M %Y')AS date, v.venueSeatingImage, e.eventImage, e.eventName, e.eventPerformer, DATE_FORMAT(p.performanceDateTime, '%H:%i')AS time FROM performances p INNER JOIN venues v ON p.venueID = v.venueID INNER JOIN events e ON e.eventID = p.eventID WHERE p.performanceID = %s",(performanceID,))[0]
+        performanceData = executeQuery("SELECT p.performanceID, v.venueCity, v.venueName, DATE_FORMAT(p.performanceDateTime, '%D %M %Y')AS date, v.venueSeatingImage, e.eventImage, e.eventName, e.eventPerformer, DATE_FORMAT(p.performanceDateTime, '%H:%i')AS time, p.performanceTicketLimit FROM performances p INNER JOIN venues v ON p.venueID = v.venueID INNER JOIN events e ON e.eventID = p.eventID WHERE p.performanceID = %s",(performanceID,))[0]
         venueTicketOptions = executeQuery(venueTicketOptionsQuery,(int(performanceID),))
+
 
         print("TICKET OPTIONS: ")
         print(venueTicketOptions)

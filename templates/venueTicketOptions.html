@@ -80,13 +80,11 @@
 <script>
 
   function increaseTicketQuantity(peformanceTicketTypeID){
-    exisitingQuantity = document.forms["ticketTypeQuantites" + peformanceTicketTypeID]["ticketQuantity"].value;
-    document.forms["ticketTypeQuantites" + peformanceTicketTypeID]["ticketQuantity"].value = parseInt(exisitingQuantity) + 1;
+    changeTicketQuantity(peformanceTicketTypeID, 1);
   }
 
   function decreaseTicketQuantity(peformanceTicketTypeID){
-    exisitingQuantity = document.forms["ticketTypeQuantites" + peformanceTicketTypeID]["ticketQuantity"].value;
-    document.forms["ticketTypeQuantites" + peformanceTicketTypeID]["ticketQuantity"].value = parseInt(exisitingQuantity) - 1;
+    changeTicketQuantity(peformanceTicketTypeID, -1);
   }
 
 </script>
@@ -99,6 +97,24 @@
       totalQuantity += + document.forms["ticketTypeQuantites{{ticket[0]}}"]["ticketQuantity"].value;
     {% endfor %}
     console.log(totalQuantity);
+  }
+
+</script>
+
+<script>
+
+  function changeTicketQuantity(peformanceTicketTypeID, increase){
+    exisitngQuantity = document.forms["ticketTypeQuantites" + peformanceTicketTypeID]["ticketQuantity"].value;
+    proposedQuantity = parseInt(exisitngQuantity) + parseInt(increase)
+    if (proposedQuantity < 0){
+      console.log("Ticket already at 0")
+    }
+    else if (proposedQuantity > {{performanceData[9]}}){
+      console.log("Ticket limit reached!")
+    }
+    else{
+      document.forms["ticketTypeQuantites" + peformanceTicketTypeID]["ticketQuantity"].value = proposedQuantity;
+    }
   }
 
 </script>
