@@ -57,8 +57,8 @@ def getSelectedTickets():
     print(tickets)
     result = []
     for ticket in tickets:
-        print(ticket[0])
-        result.append([executeQueryOne("SELECT vs.venueSeatName, ptt.performanceTicketTypePrice FROM performanceTicketTypes ptt INNER JOIN venueSeating vs ON vs.venueSeatingID = ptt.venueSeatingID WHERE ptt.performanceTicketTypeID = %s",(ticket[0],)),ticket[1]])
+        if int(ticket[1]) > 0:
+            result.append([executeQueryOne("SELECT vs.venueSeatName, ptt.performanceTicketTypePrice FROM performanceTicketTypes ptt INNER JOIN venueSeating vs ON vs.venueSeatingID = ptt.venueSeatingID WHERE ptt.performanceTicketTypeID = %s",(ticket[0],)),ticket[1]])
     print(result)
     return result
 
@@ -116,10 +116,6 @@ def viewVenueTicketOptions(performanceID):
         performanceData = getPerformanceData(performanceID)
         venueTicketOptions = executeQuery(venueTicketOptionsQuery,(int(performanceID),))
 
-
-        print("TICKET OPTIONS: ")
-        print(venueTicketOptions)
-
         return render_template("venueTicketOptions.html", ticketOptions=venueTicketOptions, performanceData = performanceData)
 
 
@@ -138,13 +134,16 @@ def loadPayment():
         guestID = session['id']
         transactionID = executeStatement("INSERT INTO transactions (guestID, transactionDateTime) VALUES (%s,%s)",(guestID, time.strftime('%Y-%m-%d %H:%M:%S')))
 
-        basket = getBasketData()
-        for ticket in basket:
-            performanceID = ticket[0][0]
-            seatID = int(executeQuery("SELECT COUNT(*) FROM tickets WHERE performanceID = %s",(performanceID,))[0][0])
-            print(seatID)
-            executeStatement("INSERT INTO tickets (guestID, performanceID, seatID, transactionID) VALUES (%s,%s,%s,%s)",(guestID,performanceID,seatID,transactionID))
-        return render_template("orderConfirmed.html", guestData=getGuestAccountData())
+        performanceID = request.cookies.get("performanceID")
+        tickets = getCookieTickets()
+        for ticket in tickets:
+            quantity = int(ticket[1])
+            for i in range(quantity):
+                performanceTicketTypeID = int(ticket[0])
+                seatID = int(executeQuery("SELECT COUNT(*) FROM tickets WHERE performanceID = %s and performanceTicketTypeID = %s",(performanceID,performanceTicketTypeID))[0][0])
+                executeStatement("INSERT INTO tickets (guestID, performanceID, seatID, transactionID, performanceTicketTypeID) VALUES (%s,%s,%s,%s,%s)",(guestID,performanceID,seatID,transactionID,performanceTicketTypeID))
+
+        return "Ok"
 
 @app.route('/checkout/orderConfirmed', methods = ['GET'])
 def loadOrderConfirmed():
