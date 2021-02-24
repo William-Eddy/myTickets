@@ -3,7 +3,10 @@
 {% block content %}
 {{ super() }}
 
-<h1>Order confirmed</h1>
+<div class="transactionSuccessfulTitle">
+  <h1>You're going to see {{transactionData[2]}}!</h1>
+  <h2>Your order has been placed! Thank you for using mytickets</h2>
+</div>
 
 {% include "guestInfo.html" %}
 

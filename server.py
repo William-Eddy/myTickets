@@ -142,7 +142,7 @@ def loadPayment():
 @app.route('/checkout/orderConfirmed/<transactionID>', methods = ['GET'])
 def loadOrderConfirmed(transactionID):
     if request.method == 'GET':
-        transactionData = executeQuery("SELECT * FROM transaction_view WHERE transactionID = %s",(transactionID,))
+        transactionData = executeQuery("SELECT * FROM transaction_view WHERE transactionID = %s",(transactionID,))[0]
         ticketData = executeQuery("SELECT venueSeatName, seatID, TRUNCATE(ticketCost,2) FROM ticket_view WHERE transactionID = %s",(transactionID,))
         return render_template("orderConfirmed.html", transactionData=transactionData, guestData=getGuestAccountData(), ticketData=ticketData)
 
