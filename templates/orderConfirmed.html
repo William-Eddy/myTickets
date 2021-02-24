@@ -8,29 +8,44 @@
   <h2>Your order has been placed! Thank you for using mytickets</h2>
 </div>
 
-{% include "guestInfo.html" %}
+<div class="orderConfirmedDetails">
 
-{{transactionData[0]}}
-{{transactionData[1]}}
-{{transactionData[2]}}
-{{transactionData[3]}}
-{{transactionData[4]}}
-{{transactionData[5]}}
+  <div>
+    <h2>Your details</h2><br>
+    {% include "guestInfo.html" %}
+  </div>
 
 
-<table><br>
-  <tr>
-    <th>Seating</th>
-    <th>Seat Number</th>
-    <th>Cost</th>
-  </tr>
-  {% for ticket in ticketData %}
-  <tr>
-    <td style="width:45%;">{{ticket[0]}}</td>
-    <td style="width:45%;">{{ticket[1]}}</td>
-    <td style="width:24%;">£{{ticket[2]}}</td>
-  </tr>
-  {% endfor %}
-</table><br>
+  <div>
+    <h2>Peformance Details</h2><br>
+    Performance: {{transactionData[1]}}<br>
+    Performer: {{transactionData[2]}}<br>
+    Venue: {{transactionData[3]}}<br>
+    Date: {{transactionData[4]}}<br>
+    Time: {{transactionData[5]}}<br>
+  </div>
+
+  <div>
+    <h2>Ticket details</h2>
+    <table><br>
+      <tr>
+        <th>Seating</th>
+        <th>Seat Number</th>
+        <th>Cost</th>
+      </tr>
+      {% for ticket in ticketData %}
+      <tr>
+        <td style="width:65%;">{{ticket[0]}}</td>
+        <td style="width:50%;">{{ticket[1]}}</td>
+        <td style="width:24%;">£{{ticket[2]}}</td>
+      </tr>
+      {% endfor %}
+    </table><br>
+
+    <h2>Total: £{{transactionData[6]}}</h2>
+  </div>
+
+</div>
+
 
 {% endblock %}
