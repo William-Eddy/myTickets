@@ -3,27 +3,33 @@
 {% block content %}
 {{ super() }}
 
-Login
-
-<form onsubmit="return login()" method="post" id="loginForm">
-  <label for="emailAddress">Email Address:</label><br>
-  <input type="text" id="emailAddress" name="emailAddress"><br>
-  <label for="password">Password:</label><br>
-  <input type="text" id="password" name="password"><br>
-  <input type="submit" value="Login" /><br>
-</form>
-
-{% if msg is defined %}
-    Message: {{msg}}
-{% endif %}
+<h1 class="loginTitle">Memories start here.</h1>
 
 <div class="loginFlex">
   <div class="loginLeft">
+    <h2>Exisiting customers</h2>
+    <form onsubmit="return login()" method="post" id="loginForm">
+      <label for="emailAddress">Email Address:</label><br>
+      <input type="text" id="emailAddress" name="emailAddress" style="width: 250px;"><br>
+      <label for="password">Password:</label><br>
+      <input type="password" id="password" name="password"><br>
+      <input type="submit" class="button loginButton" value="Login" /><br>
+    </form>
+
+    {% if msg is defined %}
+        <p>{{msg}}</p>
+    {% endif %}
   </div>
 
   <div class="divider"></div>
 
   <div class="loginRight">
+    <h2>New customers</h2>
+    <form action="/account/register" id="RegisterForm">
+      <input type="submit" class="button" value="Register" /><br>
+    </form>
+    <h2>Venues and promoters</h2>
+    <a href="/partner">Click here to login with your partner details</a>
   </div>
 </div>
 

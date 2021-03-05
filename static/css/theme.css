@@ -380,13 +380,30 @@ form h2{
 }
 
 .loginLeft, .loginRight{
-  height: 400px;
-  border: 1px solid black;
-  width: 40%;
+  height: 300px;
+  width: 28%;
   margin: 10px;
+}
+
+.loginLeft > *, .loginRight > *{
+  margin: 25px;
+}
+
+.loginLeft h2, .loginRight h2{
+  font-size: 28px;
 }
 
 .divider{
   border-left: 1px solid grey;
-  height: 400px;
+  height: 300px;
+}
+
+.loginTitle{
+  text-align: center;
+  padding: 40px;
+  font-size: 50px;
+}
+
+.loginButton{
+  margin-top: 15px;
 }
