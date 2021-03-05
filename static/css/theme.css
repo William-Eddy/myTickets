@@ -373,3 +373,37 @@ form h2{
   justify-content:space-around;
   margin-top: 60px;
 }
+
+.loginFlex{
+  display: flex;
+  justify-content: center;
+}
+
+.loginLeft, .loginRight{
+  height: 300px;
+  width: 28%;
+  margin: 10px;
+}
+
+.loginLeft > *, .loginRight > *{
+  margin: 25px;
+}
+
+.loginLeft h2, .loginRight h2{
+  font-size: 28px;
+}
+
+.divider{
+  border-left: 1px solid grey;
+  height: 300px;
+}
+
+.loginTitle{
+  text-align: center;
+  padding: 40px;
+  font-size: 50px;
+}
+
+.loginButton{
+  margin-top: 15px;
+}
